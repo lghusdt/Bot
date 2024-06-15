@@ -1,0 +1,12 @@
+{
+  "name": "your-bot-name",
+  "version": "1.0.0",
+  "description": "Your Telegram bot description",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "grammy": "^1.12.0" 
+  }
+}
