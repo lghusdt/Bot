@@ -1,11 +1,13 @@
-import { Bot } from "grammy";
+import { Bot, GrammyError } from "grammy";
 import dotenv from "dotenv";
-require('dotenv').config();
 
 dotenv.config(); // 加载环境变量
 
-const bot = new Bot(process.env.BOT_TOKEN); // 从环境变量中获取机器人令牌
-const allowedChatIds = process.env.ALLOWED_CHAT_IDS?.split(",").map(Number) || []; // 从环境变量中获取白名单，并转换为数字数组
+const bot = new Bot({
+    token: process.env.BOT_TOKEN,
+});
+
+const allowedChatIds = process.env.ALLOWED_CHAT_IDS?.split(",").map(Number) || [];
 
 // 自动回复和触发规则（可以从配置文件中读取）
 const triggers = {
@@ -15,6 +17,7 @@ const triggers = {
     Email: "lghusdt@gmail.com",
 };
 
+// 监听消息事件（假设为 business_message，需要根据实际情况修改）
 bot.on("business_message", async (ctx) => {
     try {
         // 白名单检查
@@ -23,7 +26,7 @@ bot.on("business_message", async (ctx) => {
             return;
         }
 
-        // 获取当前用户的信息
+        // 获取当前用户的信息（这里的实现需要根据你的业务逻辑进行调整）
         const conn = await ctx.getBusinessConnection();
         const employee = conn.user;
 
@@ -41,10 +44,14 @@ bot.on("business_message", async (ctx) => {
             }
         }
     } catch (error) {
-        console.error("Error handling business message:", error);
+        if (error instanceof GrammyError) {
+            console.error("Grammy error:", error.description);
+        } else {
+            console.error("Error handling business message:", error);
+        }
     }
 });
 
-// 处理编辑、删除消息和 Business Connection 变更的代码可以添加在这里
+// 其他处理编辑、删除消息和 Business Connection 变更的代码可以添加在这里
 
 bot.start();
