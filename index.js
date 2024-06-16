@@ -1,5 +1,6 @@
 import { Bot } from "grammy";
 import dotenv from "dotenv";
+require('dotenv').config();
 
 dotenv.config(); // 加载环境变量
 
