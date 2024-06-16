@@ -1,14 +1,13 @@
 {
-  "name": "wowusebot",
+  "type": "module",
+  "name": "wowesebot",
   "version": "1.0.0",
-  "description": "Your Telegram bot description",
   "main": "index.js",
+  "dependencies": {
+    "grammy": "^4.0.0",
+    "dotenv": "^10.0.0"
+  },
   "scripts": {
     "start": "node index.js"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "grammy": "^1.0.0"
-  },
-  "type": "commonjs"
+  }
 }

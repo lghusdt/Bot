@@ -1,7 +1,7 @@
 import { Bot, GrammyError } from "grammy";
 import dotenv from "dotenv";
 
-dotenv.config(); // 加载环境变量
+dotenv.config();
 
 const bot = new Bot({
     token: process.env.BOT_TOKEN,
