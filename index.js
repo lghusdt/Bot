@@ -4,9 +4,10 @@ const bot = new Bot("7207248508:AAGmbiVCNnOXaGgXBCY2YKjtQPnmglm7-NI");
 
 // 自动回复和触发规则
 const triggers = {
-    USDT: "Tether(USD)TRC20💰\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD",
-    "能量兑换": "(TRX)Tron🔋\nTFGtWpBJQqnpZsxytyPfQaQ6EpFBCVuN2",
-    "联系方式": "您可以通过以下方式联系我们：\n- 电话：+15185941168\n- 邮箱：lghusdt@gmail.com",
+    USDT: "Tether(USD₮)TRC20:\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD",
+    "TRX": "(TRX)Tron:\nTFGtWpBJQqnpZsxytyPfQaQ6EpFBCVuN2",
+    "电话": "+15185941168",
+    "Email": "lghusdt@gmail.com",
 };
 
 bot.on("business_message", async (ctx) => {
