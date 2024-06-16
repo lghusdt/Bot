@@ -1,5 +1,5 @@
 {
-  "name": "damp-brushlands-89191",
+  "name": "wowusebot",
   "version": "1.0.0",
   "description": "Your Telegram bot description",
   "main": "index.js",
@@ -10,5 +10,5 @@
     "dotenv": "^16.4.5",
     "grammy": "^1.0.0"
   },
-  "type": "module"
+  "type": "commonjs"
 }
