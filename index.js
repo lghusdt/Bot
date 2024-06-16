@@ -4,7 +4,7 @@ const bot = new Bot("7207248508:AAGmbiVCNnOXaGgXBCY2YKjtQPnmglm7-NI");
 
 // 自动回复和触发规则
 const triggers = {
-    USDT: "Tether(USD)TRC20\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD",
+    USDT: "Tether(USD)TRC20💰\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD",
     "能量兑换": "🔋\nTFGtWpBJQqnpZsxytyPfQaQ6EpFBCVuN2",
     "联系方式": "您可以通过以下方式联系我们：\n- Tel：+15185941168\n- Email：lghusdt@gmail.com",
 };
