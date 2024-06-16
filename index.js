@@ -1,10 +1,10 @@
-import { Bot, Context } from "grammy";
-import * as dotenv from "dotenv";
+import { Bot } from "grammy";
+import dotenv from "dotenv";
 
 dotenv.config(); // 加载环境变量
 
 const bot = new Bot(process.env.BOT_TOKEN); // 从环境变量中获取机器人令牌
-const allowedChatIds = process.env.ALLOWED_CHAT_IDS.split(",").map(Number); // 从环境变量中获取白名单，并转换为数字数组
+const allowedChatIds = process.env.ALLOWED_CHAT_IDS?.split(",").map(Number) || []; // 从环境变量中获取白名单，并转换为数字数组
 
 // 自动回复和触发规则（可以从配置文件中读取）
 const triggers = {
@@ -22,11 +22,13 @@ bot.on("business_message", async (ctx) => {
             return;
         }
 
+        // 获取当前用户的信息
         const conn = await ctx.getBusinessConnection();
         const employee = conn.user;
 
-        if (ctx.from.id !== employee.id) { // 仅处理客户消息
-            const messageText = ctx.msg.text?.toLowerCase();
+        // 仅处理客户消息
+        if (ctx.from.id !== employee.id) {
+            const messageText = ctx.message.text?.toLowerCase();
 
             // 触发回复
             for (const trigger in triggers) {
@@ -42,6 +44,6 @@ bot.on("business_message", async (ctx) => {
     }
 });
 
-// ... (处理编辑、删除消息和 Business Connection 变更的代码)
+// 处理编辑、删除消息和 Business Connection 变更的代码可以添加在这里
 
 bot.start();
