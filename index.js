@@ -15,8 +15,15 @@ const triggers = {
     Email: "lghusdt@gmail.com",
 };
 
+// 在 bot.start() 之前设置 Webhook
+bot.api.setWebhook(process.env.WEBHOOK_URL).then(() => {
+    console.log(`Webhook set to ${process.env.WEBHOOK_URL}`);
+}).catch((error) => {
+    console.error("Error setting webhook:", error);
+});
+
 // 监听消息事件
-bot.on("message", async (ctx: Context) => {  // 注意这里加了右括号
+bot.on("message", async (ctx: Context) => {
     try {
         // 白名单检查
         if (!allowedChatIds.includes(ctx.chat.id)) {
