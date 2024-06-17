@@ -1,17 +1,16 @@
 {
-  "type": "module",
-  "name": "wowesebot",
+  "name": "telegram-business-bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A Telegram bot for business messages.",
+  "type": "module",
   "dependencies": {
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.4.5",
     "grammy": "^1.24.1"
   },
   "scripts": {
     "start": "node index.js"
   },
-  "description": "\"# bot\" \r \"# bot\"",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "engines": {
+    "node": "16.x"
+  }
 }
