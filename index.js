@@ -42,16 +42,6 @@ bot.on("business_message", async (ctx) => {
     if (ctx.from.id !== employee.id) { // 仅处理客户消息
         const messageText = ctx.msg.text?.toLowerCase();
 
-        // 检查用户是否在白名单中
-        if (!allowedUserIds.includes(ctx.from.id)) {
-            try {
-                await ctx.reply("抱歉，您没有权限使用此机器人。");
-            } catch (error) {
-                console.error("Error sending message:", error.message);
-            }
-            return;
-        }
-
         // 触发回复
         for (const trigger in triggers) {
             if (messageText.includes(trigger.toLowerCase())) {
