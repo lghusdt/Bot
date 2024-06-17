@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "grammy": "^4.0.0",
+    "grammy": "^1.24.1",
     "dotenv": "^10.0.0"
   },
   "scripts": {
