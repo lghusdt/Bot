@@ -1,9 +1,9 @@
 import { Bot, GrammyError, Context } from "grammy";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config(); // 加载 .env 文件
 
-const bot = new Bot(process.env.BOT_TOKEN);
+const bot = new Bot(process.env.BOT_TOKEN); // 从环境变量中获取 Bot Token
 
 const allowedChatIds = process.env.ALLOWED_CHAT_IDS?.split(",").map(Number) || [];
 
@@ -15,8 +15,8 @@ const triggers = {
     Email: "lghusdt@gmail.com",
 };
 
-// 监听消息事件（假设为普通文本消息）
-bot.on("message", async (ctx: Context) => {
+// 监听消息事件
+bot.on("message", async (ctx: Context) => {  // 注意这里加了右括号
     try {
         // 白名单检查
         if (!allowedChatIds.includes(ctx.chat.id)) {
@@ -43,4 +43,4 @@ bot.on("message", async (ctx: Context) => {
     }
 });
 
-bot.start();
+bot.start(); // 启动机器人
