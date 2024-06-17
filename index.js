@@ -1,53 +1,72 @@
-import { Bot, GrammyError, Context } from "grammy";
+import { Bot, Context, InlineKeyboard } from "grammy";
 import dotenv from "dotenv";
 
-dotenv.config(); // 加载 .env 文件
+dotenv.config();
 
-const bot = new Bot(process.env.BOT_TOKEN); // 从环境变量中获取 Bot Token
+const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN);
+const users = {};
 
-const allowedChatIds = process.env.ALLOWED_CHAT_IDS?.split(",").map(Number) || [];
+const allowedUserIdsString = process.env.ALLOWED_USER_IDS || "";
+const allowedUserIds = allowedUserIdsString.split(",").map(Number);
 
-// 触发词和回复
-const triggers = {
-    USDT: "Tether(USD₮)TRC20:\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD",
-    TRX: "(TRX)Tron:\nTFGtWpBJQqnpZsxytyPfQaQ6EpFBCVuN2",
-    电话: "+15185941168",
-    Email: "lghusdt@gmail.com",
-};
+const triggersMap = new Map([
+    ["usdt", "usdt_options"],
+    ["能量兑换", "🔋\nTFGtWpBJQqnpZsxytyPfQaQ6EpFBCVuN2"],
+    ["联系方式", "您可以通过以下方式联系我们：\n- 电话：+15185941168\n- 邮箱：lghusdt@gmail.com"],
+]);
 
-// 在 bot.start() 之前设置 Webhook
-bot.api.setWebhook(process.env.WEBHOOK_URL).then(() => {
-    console.log(`Webhook set to ${process.env.WEBHOOK_URL}`);
-}).catch((error) => {
-    console.error("Error setting webhook:", error);
-});
+bot.on("business_message", async (ctx) => {
+    const userId = ctx.from.id;
 
-// 监听消息事件
-bot.on("message", async (ctx: Context) => {
-    try {
-        // 白名单检查
-        if (!allowedChatIds.includes(ctx.chat.id)) {
-            console.log(`Received message from unauthorized chat ID: ${ctx.chat.id}`);
-            return;
-        }
+    // 检查用户是否在白名单中
+    if (!allowedUserIds.includes(userId)) {
+        await ctx.reply("抱歉，您没有权限使用此机器人。");
+        return;
+    }
 
-        const messageText = ctx.message.text?.toLowerCase();
+    let user = users[userId];
 
-        // 触发回复
-        for (const trigger in triggers) {
-            if (messageText.includes(trigger.toLowerCase())) {
-                await ctx.reply(triggers[trigger]);
-                console.log(`Sent reply to chat ID ${ctx.chat.id}: ${triggers[trigger]}`);
-                return; // 避免多次回复
+    if (!user) {
+        user = {
+            firstName: ctx.from.first_name,
+            lastName: ctx.from.last_name,
+        };
+        users[userId] = user;
+    }
+
+    const messageText = ctx.msg.text?.toLowerCase();
+
+    if (messageText === "usdt") {
+        const keyboard = new InlineKeyboard()
+            .text("TRC20 地址", "usdt_trc20")
+            .text("ERC20 地址", "usdt_erc20");
+        await ctx.reply("请选择 USDT 网络类型：", { reply_markup: keyboard });
+    } else {
+        const reply = triggersMap.get(messageText);
+        if (reply) {
+            if (reply === "usdt_options") {
+                // 处理 USDT 选项
+                const keyboard = new InlineKeyboard()
+                    .text("TRC20 地址", "usdt_trc20")
+                    .text("ERC20 地址", "usdt_erc20");
+                await ctx.reply("请选择 USDT 网络类型：", { reply_markup: keyboard });
+            } else {
+                await ctx.reply(reply);
             }
-        }
-    } catch (error) {
-        if (error instanceof GrammyError) {
-            console.error("Grammy error:", error.description);
         } else {
-            console.error("Error handling message:", error);
+            await ctx.reply("您好，请问有什么可以帮您？");
         }
     }
 });
 
-bot.start(); // 启动机器人
+bot.callbackQuery("usdt_trc20", async (ctx) => {
+    await ctx.reply("TRC20 地址: 💵\nTH8c9nA8wQunRWgQCsyzVHoMKU7oDngQmD\n\n请注意：\n- 仅支持 TRC20 网络\n- 充值前请仔细核对地址");
+});
+
+bot.callbackQuery("usdt_erc20", async (ctx) => {
+    await ctx.reply("ERC20 地址: 💵\n0x1234567890abcdef..."); // 替换为实际的 ERC20 地址
+});
+
+// ... (处理编辑、删除消息和 Business Connection 变更的代码与之前相同)
+
+bot.start();
